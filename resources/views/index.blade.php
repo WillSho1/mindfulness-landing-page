@@ -44,8 +44,14 @@
                     <p class="text-sm mb-4">
                         The Mindfulness app, which is actively in development, aims to help high-risk divorced families maintain emotional balance. Funded by the National Institute of Mental Health, this project combines technology with research-based mindfulness practices.
                     </p>
-                    <p class="text-sm mb-4">
-                        Current project status: Most of the apps .
+                    <h3 class="text-xl font-semibold text-dark-green mb-3">Current Status</h3>
+                    <ul class="list-disc list-inside text-md mb-4 space-y-2">
+                        <li>Core features development: <span class="font-semibold text-green-600">Complete</span></li>
+                        <li>User trials: <span class="font-semibold text-blue-600">In Progress</span></li>
+                        <li>Feedback integration: <span class="font-semibold text-blue-600">Ongoing</span></li>
+                    </ul>
+                    <p class="text-md italic">
+                        We're refining the app and content based on user insights, preparing for a wider release.
                     </p>
                 </div>
             </section>
@@ -70,15 +76,48 @@
             <!-- Tech Stack Section -->
             <section id="tech-stack" class="py-12 bg-light-grey">
                 <div class="container mx-auto px-4">
-                    <h2 class="text-2xl font-bold text-dark-green mb-4">Tech Stack</h2>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <!-- Add your tech stack items here -->
-                        <!-- Example: -->
-                        <div class="text-center">
-                            <img src="/path-to-laravel-logo.png" alt="Laravel" class="mx-auto mb-2 w-12 h-12">
-                            <p class="text-sm">Laravel</p>
+                    <h2 class="text-3xl font-bold text-dark-green mb-6">Tech Stack</h2>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h3 class="text-xl font-semibold text-dark-green mb-4">Landing Page</h3>
+                                <div class="grid grid-cols-3 gap-4">
+                                    <div class="flex flex-col items-center p-3 border rounded-lg">
+                                        <img src="{{ Storage::url('icons/laravel.svg') }}" alt="Laravel" class="w-16 h-16 mb-2">
+                                        <span class="text-sm">Laravel</span>
+                                    </div>
+                                    <div class="flex flex-col items-center p-3 border rounded-lg">
+                                        <img src="{{ Storage::url('icons/tailwind.svg') }}" alt="Tailwind CSS" class="w-16 h-16 mb-2">
+                                        <span class="text-sm">Tailwind CSS</span>
+                                    </div>
+                                    <div class="flex flex-col items-center p-3 border rounded-lg">
+                                        <img src="{{ Storage::url('icons/aws.svg') }}" alt="AWS" class="w-16 h-16 mb-2">
+                                        <span class="text-sm">AWS</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-dark-green mb-4">Main Project</h3>
+                                <div class="grid grid-cols-3 gap-4">
+                                    <div class="flex flex-col items-center p-3 border rounded-lg">
+                                        <img src="{{ Storage::url('icons/laravel.svg') }}" alt="Laravel" class="w-16 h-16 mb-2">
+                                        <span class="text-sm">Laravel</span>
+                                    </div>
+                                    <div class="flex flex-col items-center p-3 border rounded-lg">
+                                        <img src="{{ Storage::url('icons/bootstrap.svg') }}" alt="Bootstrap" class="w-16 h-16 mb-2">
+                                        <span class="text-sm">Bootstrap</span>
+                                    </div>
+                                    <div class="flex flex-col items-center p-3 border rounded-lg">
+                                        <img src="{{ Storage::url('icons/sqlite.svg') }}" alt="SQLite" class="w-16 h-16 mb-2">
+                                        <span class="text-sm">SQLite</span>
+                                    </div>
+                                    <div class="flex flex-col items-center p-3 border rounded-lg">
+                                        <img src="{{ Storage::url('icons/php.svg') }}" alt="PHP" class="w-16 h-16 mb-2">
+                                        <span class="text-sm">PHP</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <!-- Repeat for other technologies -->
                     </div>
                 </div>
             </section>
