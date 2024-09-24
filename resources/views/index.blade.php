@@ -2,7 +2,7 @@
 
 @section('content')
 <div x-data="{ open: false }" class="relative overflow-x-hidden">
-    <!-- Toggle button for mobile -->
+    <!-- mobile toggle -->
     <button @click="open = !open" 
             :class="{'left-4': !open, 'left-68': open}"
             class="md:hidden fixed top-4 z-50 bg-dark-green text-white p-2 rounded-md transition-all duration-200">
@@ -11,7 +11,7 @@
         </svg>
     </button>
 
-    <!-- Sidebar Navigation -->
+    <!-- navbar -->
     <nav :class="{'translate-x-0': open, '-translate-x-full': !open}" 
          class="fixed h-screen w-64 bg-dark-green text-white transition-transform duration-200 ease-in-out md:translate-x-0 z-40">
         <div class="p-6 pt-16 md:pt-6">
@@ -25,19 +25,19 @@
             </ul>
         </div>
     </nav>
-    <!-- Main Content -->
+    <!-- content -->
     <main class="w-full md:pl-64 transition-all duration-200 ease-in-out">
         <div class="container mx-auto">
-            <!-- Hero Section -->
+            <!-- title -->
             <section id="hero" class="h-screen bg-xlight-green flex items-center justify-center">
                 <div class="text-center">
                     <h1 class="text-4xl font-bold text-dark-green mb-2">Mindfulness</h1>
                     <p class="text-lg mb-4">Will Shostak | Full Stack Developer</p>
-                    <a href="#about" class="bg-dark-green text-white px-4 py-2 rounded-lg hover:bg-purple transition duration-300">Get in Touch</a>
+                    <a id="get-in-touch-button" class="bg-dark-green text-white px-4 py-2 rounded-lg hover:bg-purple transition duration-300">Get in Touch</a>
                 </div>
             </section>
     
-            <!-- Project Overview Section -->
+            <!-- project overview -->
             <section id="project" class="py-12 bg-light-grey">
                 <div class="container mx-auto px-4">
                     <h2 class="text-2xl font-bold text-dark-green mb-4">Project Overview</h2>
@@ -56,7 +56,7 @@
                 </div>
             </section>
     
-            <!-- Features Section -->
+            <!-- features -->
             <section id="features" class="py-12 bg-white">
                 <div class="container mx-auto px-4">
                     <h2 class="text-2xl font-bold text-dark-green mb-4">Key Features</h2>
@@ -73,10 +73,10 @@
                 </div>
             </section>
     
-            <!-- Tech Stack Section -->
+            <!-- tech stack -->
             <section id="tech-stack" class="py-12 bg-light-grey">
                 <div class="container mx-auto px-4">
-                    <h2 class="text-3xl font-bold text-dark-green mb-6">Tech Stack</h2>
+                    <h2 class="text-3xl font-bold text-dark-green mb-6">Project Tech Stack</h2>
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div>
@@ -122,7 +122,7 @@
                 </div>
             </section>
     
-            <!-- About Me & Contact Section -->
+            <!-- about me -->
             <section id="about" class="py-12 bg-white">
                 <div class="container mx-auto px-4">
                     <div class="flex flex-col items-start">
@@ -152,7 +152,7 @@
                                     </div>
                                 </div>
                                 <div class="md:w-1/3 flex justify-center md:justify-end">
-                                    <img src="{{ asset('storage/profile.PNG') }}" alt="Will Shostak" class="rounded-full w-48 h-48 object-cover mb-4">
+                                    <img src="{{ Storage::url('profile.PNG') }}" alt="Will Shostak" class="rounded-full w-48 h-48 object-cover mb-4">
                                 </div>
                             </div>
                         </div>
@@ -186,7 +186,34 @@
 document.addEventListener('DOMContentLoaded', function() {
     const sections = document.querySelectorAll('section');
     const navLinks = document.querySelectorAll('nav ul li a');
+    const contactButton = document.getElementById('get-in-touch-button');
 
+    function smoothScroll(target) {
+        const element = document.querySelector(target);
+        window.scrollTo({
+            top: element.offsetTop,
+            behavior: 'smooth'
+        });
+    }
+
+    //adding click listener to nav links, with smooth scroll
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = this.getAttribute('href');
+            smoothScroll(target);
+        });
+    });
+
+    //smooth scroll for about me
+    if (contactButton) {
+        contactButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            smoothScroll('#about');
+        });
+    }
+
+    //scrollspy
     window.addEventListener('scroll', () => {
         let current = '';
         sections.forEach(section => {
