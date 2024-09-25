@@ -137,7 +137,7 @@
                                         My role:
                                     </p>
                                     <ul class="list-disc list-inside text-sm mb-4">
-                                        <li>Lead the full-stack development of the app, utilizing Laravel</li>
+                                        <li>Lead full-stack development, utilizing Laravel</li>
                                         <li>Work closely with the client to understand their requirements and provide updates</li>
                                         <li>Manage project timeline and deliverables</li>
                                         <li>Collaborate with another developer on UI/UX design and prototyping</li>
@@ -146,7 +146,7 @@
                                         This project kicked off in March 2024, and it has been an awesome opportunity to utilize my skills and enhance my skills. I have learned an entirely new framework, as well as invaluable lessons in project management, client communication, and technical problem-solving.
                                     </p>
                                     <div class="flex space-x-4 mb-4">
-                                        <a href="mailto:your.email@example.com" class="text-dark-green hover:text-purple">Email</a>
+                                        <a href="mailto:{{ Config::get('mail.contact_email') }}" class="text-dark-green hover:text-purple">Email</a>
                                         <a href="https://linkedin.com/in/willshostak" target="_blank" class="text-dark-green hover:text-purple">LinkedIn</a>
                                         <a href="https://github.com/willsho1" target="_blank" class="text-dark-green hover:text-purple">GitHub</a>
                                     </div>
@@ -158,18 +158,23 @@
                         </div>
                         <div class="w-full md:w-2/3">
                             <h3 class="text-xl font-bold text-dark-green mb-4">Get in Touch</h3>
-                            <form>
+                            <div id="form-error" class="hidden mb-4 p-4 bg-red-100 text-red-700 rounded-md"></div>
+                            <form id="contact-form" action="{{ route('contact.submit') }}" method="POST">
+                                @csrf
                                 <div class="mb-4">
                                     <label for="name" class="block text-sm font-medium text-dark-green mb-1">Name</label>
                                     <input type="text" id="name" name="name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-dark-green">
+                                    <div id="name-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                 </div>
                                 <div class="mb-4">
                                     <label for="email" class="block text-sm font-medium text-dark-green mb-1">Email</label>
                                     <input type="email" id="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-dark-green">
+                                    <div id="email-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                 </div>
                                 <div class="mb-4">
                                     <label for="message" class="block text-sm font-medium text-dark-green mb-1">Message</label>
                                     <textarea id="message" name="message" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-dark-green"></textarea>
+                                    <div id="message-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                 </div>
                                 <button type="submit" class="bg-dark-green text-white px-4 py-2 rounded-lg hover:bg-purple transition duration-300">Send Message</button>
                             </form>
@@ -229,6 +234,61 @@ document.addEventListener('DOMContentLoaded', function() {
             if (link.getAttribute('href').slice(1) === current) {
                 link.classList.add('text-light-green');
             }
+        });
+    });
+
+    //contact form
+    const form = document.getElementById('contact-form');
+    const formError = document.getElementById('form-error');
+    const nameError = document.getElementById('name-error');
+    const emailError = document.getElementById('email-error');
+    const messageError = document.getElementById('message-error');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        //clear errors
+        formError.classList.add('hidden');
+        nameError.classList.add('hidden');
+        emailError.classList.add('hidden');
+        messageError.classList.add('hidden');
+
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.errors) {
+                //displaying errors
+                Object.keys(data.errors).forEach(field => {
+                    const errorElement = document.getElementById(`${field}-error`);
+                    if (errorElement) {
+                        errorElement.textContent = data.errors[field][0];
+                        errorElement.classList.remove('hidden');
+                    }
+                });
+            } else if (data.success) {
+                //clear form
+                form.reset();
+                
+                //success message
+                formError.textContent = 'Message sent successfully!';
+                formError.classList.remove('hidden');
+                formError.classList.remove('bg-red-100', 'text-red-700');
+                formError.classList.add('bg-green-100', 'text-green-700');
+            }
+        })
+        .catch(error => {
+            //full error message
+            console.error('Error:', error);
+            formError.textContent = 'An error occurred. Please try again later.';
+            formError.classList.remove('hidden');
         });
     });
 });
