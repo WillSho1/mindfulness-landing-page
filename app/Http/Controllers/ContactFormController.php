@@ -7,6 +7,7 @@ use App\Models\FormSubmission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Validator;
 
 class ContactFormController extends Controller
@@ -35,6 +36,16 @@ class ContactFormController extends Controller
                     'errors' => $validator->errors()
                 ], 422);
             }
+
+            //rate requests by ip
+            $key = 'contact_form:' . $request->ip();
+            if (RateLimiter::tooManyAttempts($key, $max = 3)) {
+                $seconds = RateLimiter::availableIn($key);
+                return response()->json([
+                    'errors' => ['general' => ['Too many emails sent. Please try again in ' . $seconds . ' seconds.']]
+                ], 429);
+            }
+
             //save to db
             $submission = FormSubmission::create([
                 'name' => $request->name,
@@ -44,6 +55,7 @@ class ContactFormController extends Controller
     
             //email
             Mail::to(Config::get('mail.contact_email'))->send(new ContactFormEmail($submission));
+            RateLimiter::hit($key);
 
             return response()->json(['success' => 'Message sent!'], 200);
         }
