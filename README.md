@@ -15,7 +15,7 @@ The project is part of a research initiative sponsored by the National Institute
 
 ## Technology Stack
 
-- Frontend Framework: Laravel
+- MVC Framework: Laravel
 - CSS Framework: Tailwind CSS
 - Build Tool: Vite
 - Development Utility: Concurrently
@@ -104,10 +104,11 @@ This landing page is part of a broader research initiative focused on supporting
 
 ## Contact
 
-For more information about the research project or the main application, please contact:
+For more information about this project, please contact:
 
-TODO - contact info
+- Name: Will Shostak
+- Email: [whshocon@gmail.com](mailto:whshocon@gmail.com)
 
 ---
 
-This landing page project is part of a grant-funded research initiative aimed at supporting divorced families through mindfulness practices.
+This is a personal landing page to demonstrate my role in the development of another application, which is part of a grant-funded research initiative aimed at supporting divorced families through mindfulness practice.
