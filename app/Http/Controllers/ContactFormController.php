@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class ContactFormController extends Controller
 {
@@ -54,13 +55,27 @@ class ContactFormController extends Controller
             ]);
     
             //email
-            Mail::to(Config::get('mail.contact_email'))->send(new ContactFormEmail($submission));
+            try {
+                Mail::to(Config::get('mail.contact_email'))->send(new ContactFormEmail($submission));
+            } catch (\Exception $mailException) {
+                Log::error('Failed to send email: ' . $mailException->getMessage(), [
+                    'exception' => $mailException,
+                    'submission_id' => $submission->id,
+                    'to_email' => Config::get('mail.contact_email'),
+                ]);
+                return response()->json(['error' => 'Failed to send email. Please try again later.'], 500);
+            }
+
             RateLimiter::hit($key);
 
             return response()->json(['success' => 'Message sent!'], 200);
         }
         catch (\Exception $e) {
-            return response()->json(['error_message' => 'Failed to submit quiz answers.', 'error' => $e], 500);
+            Log::error('Contact form submission failed: ' . $e->getMessage(), [
+                'exception' => $e,
+                'request' => $request->all(),
+            ]);
+            return response()->json(['error' => 'Failed to submit contact form. Please try again later.'], 500);
         }
     }
 }
