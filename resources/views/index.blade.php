@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div x-data="{ open: false }" class="relative overflow-x-hidden">
-    <!-- Toggle button for mobile -->
+<div x-data="{ open: false }" class="relative overflow-x-hidden min-h-screen flex">
+    <!-- mobile toggle -->
     <button @click="open = !open" 
             :class="{'left-4': !open, 'left-68': open}"
             class="md:hidden fixed top-4 z-50 bg-dark-green text-white p-2 rounded-md transition-all duration-200">
@@ -11,7 +11,7 @@
         </svg>
     </button>
 
-    <!-- Sidebar Navigation -->
+    <!-- navbar -->
     <nav :class="{'translate-x-0': open, '-translate-x-full': !open}" 
          class="fixed h-screen w-64 bg-dark-green text-white transition-transform duration-200 ease-in-out md:translate-x-0 z-40">
         <div class="p-6 pt-16 md:pt-6">
@@ -25,19 +25,19 @@
             </ul>
         </div>
     </nav>
-    <!-- Main Content -->
-    <main class="w-full md:pl-64 transition-all duration-200 ease-in-out">
-        <div class="container mx-auto">
-            <!-- Hero Section -->
+    <!-- content -->
+    <main class="flex-grow md:ml-64 transition-all duration-200 ease-in-out">
+        <div class="min-h-screen flex flex-col">
+            <!-- title -->
             <section id="hero" class="h-screen bg-xlight-green flex items-center justify-center">
                 <div class="text-center">
                     <h1 class="text-4xl font-bold text-dark-green mb-2">Mindfulness</h1>
                     <p class="text-lg mb-4">Will Shostak | Full Stack Developer</p>
-                    <a href="#about" class="bg-dark-green text-white px-4 py-2 rounded-lg hover:bg-purple transition duration-300">Get in Touch</a>
+                    <a id="get-in-touch-button" class="bg-dark-green text-white px-4 py-2 rounded-lg hover:bg-purple transition duration-300">Get in Touch</a>
                 </div>
             </section>
     
-            <!-- Project Overview Section -->
+            <!-- project overview -->
             <section id="project" class="py-12 bg-light-grey">
                 <div class="container mx-auto px-4">
                     <h2 class="text-2xl font-bold text-dark-green mb-4">Project Overview</h2>
@@ -56,16 +56,15 @@
                 </div>
             </section>
     
-            <!-- Features Section -->
+            <!-- features -->
             <section id="features" class="py-12 bg-white">
                 <div class="container mx-auto px-4">
                     <h2 class="text-2xl font-bold text-dark-green mb-4">Key Features</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         @foreach ($features as $feature)
                             <x-feature-card :feature="$feature" />
                         @endforeach
                     </div>
-                    <!-- Add screenshots here -->
                     <div class="mt-8">
                         <h3 class="text-xl font-bold text-dark-green mb-2">Feature Previews</h3>
                         <!-- Add your screenshot carousel or grid here -->
@@ -73,10 +72,10 @@
                 </div>
             </section>
     
-            <!-- Tech Stack Section -->
+            <!-- tech stack -->
             <section id="tech-stack" class="py-12 bg-light-grey">
                 <div class="container mx-auto px-4">
-                    <h2 class="text-3xl font-bold text-dark-green mb-6">Tech Stack</h2>
+                    <h2 class="text-3xl font-bold text-dark-green mb-6">Project Tech Stack</h2>
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div>
@@ -122,7 +121,7 @@
                 </div>
             </section>
     
-            <!-- About Me & Contact Section -->
+            <!-- about me -->
             <section id="about" class="py-12 bg-white">
                 <div class="container mx-auto px-4">
                     <div class="flex flex-col items-start">
@@ -137,7 +136,7 @@
                                         My role:
                                     </p>
                                     <ul class="list-disc list-inside text-sm mb-4">
-                                        <li>Lead the full-stack development of the app, utilizing Laravel</li>
+                                        <li>Lead full-stack development, utilizing Laravel</li>
                                         <li>Work closely with the client to understand their requirements and provide updates</li>
                                         <li>Manage project timeline and deliverables</li>
                                         <li>Collaborate with another developer on UI/UX design and prototyping</li>
@@ -146,30 +145,35 @@
                                         This project kicked off in March 2024, and it has been an awesome opportunity to utilize my skills and enhance my skills. I have learned an entirely new framework, as well as invaluable lessons in project management, client communication, and technical problem-solving.
                                     </p>
                                     <div class="flex space-x-4 mb-4">
-                                        <a href="mailto:your.email@example.com" class="text-dark-green hover:text-purple">Email</a>
+                                        <a href="mailto:{{ Config::get('mail.contact_email') }}" class="text-dark-green hover:text-purple">Email</a>
                                         <a href="https://linkedin.com/in/willshostak" target="_blank" class="text-dark-green hover:text-purple">LinkedIn</a>
                                         <a href="https://github.com/willsho1" target="_blank" class="text-dark-green hover:text-purple">GitHub</a>
                                     </div>
                                 </div>
                                 <div class="md:w-1/3 flex justify-center md:justify-end">
-                                    <img src="{{ asset('storage/profile.PNG') }}" alt="Will Shostak" class="rounded-full w-48 h-48 object-cover mb-4">
+                                    <img src="{{ Storage::url('profile.PNG') }}" alt="Will Shostak" class="rounded-full w-48 h-48 object-cover mb-4">
                                 </div>
                             </div>
                         </div>
                         <div class="w-full md:w-2/3">
                             <h3 class="text-xl font-bold text-dark-green mb-4">Get in Touch</h3>
-                            <form>
+                            <div id="form-error" class="hidden mb-4 p-4 bg-red-100 text-red-700 rounded-md"></div>
+                            <form id="contact-form" action="{{ route('contact.submit') }}" method="POST">
+                                @csrf
                                 <div class="mb-4">
                                     <label for="name" class="block text-sm font-medium text-dark-green mb-1">Name</label>
                                     <input type="text" id="name" name="name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-dark-green">
+                                    <div id="name-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                 </div>
                                 <div class="mb-4">
                                     <label for="email" class="block text-sm font-medium text-dark-green mb-1">Email</label>
                                     <input type="email" id="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-dark-green">
+                                    <div id="email-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                 </div>
                                 <div class="mb-4">
                                     <label for="message" class="block text-sm font-medium text-dark-green mb-1">Message</label>
                                     <textarea id="message" name="message" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-dark-green"></textarea>
+                                    <div id="message-error" class="text-red-500 text-sm mt-1 hidden"></div>
                                 </div>
                                 <button type="submit" class="bg-dark-green text-white px-4 py-2 rounded-lg hover:bg-purple transition duration-300">Send Message</button>
                             </form>
@@ -186,7 +190,34 @@
 document.addEventListener('DOMContentLoaded', function() {
     const sections = document.querySelectorAll('section');
     const navLinks = document.querySelectorAll('nav ul li a');
+    const contactButton = document.getElementById('get-in-touch-button');
 
+    function smoothScroll(target) {
+        const element = document.querySelector(target);
+        window.scrollTo({
+            top: element.offsetTop,
+            behavior: 'smooth'
+        });
+    }
+
+    //adding click listener to nav links, with smooth scroll
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = this.getAttribute('href');
+            smoothScroll(target);
+        });
+    });
+
+    //smooth scroll for about me
+    if (contactButton) {
+        contactButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            smoothScroll('#about');
+        });
+    }
+
+    //scrollspy
     window.addEventListener('scroll', () => {
         let current = '';
         sections.forEach(section => {
@@ -202,6 +233,102 @@ document.addEventListener('DOMContentLoaded', function() {
             if (link.getAttribute('href').slice(1) === current) {
                 link.classList.add('text-light-green');
             }
+        });
+    });
+
+    //contact form
+    const form = document.getElementById('contact-form');
+    const formError = document.getElementById('form-error');
+    const nameError = document.getElementById('name-error');
+    const emailError = document.getElementById('email-error');
+    const messageError = document.getElementById('message-error');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        //clear errors
+        formError.classList.add('hidden');
+        nameError.classList.add('hidden');
+        emailError.classList.add('hidden');
+        messageError.classList.add('hidden');
+
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.errors) {
+                //displaying errors
+                Object.keys(data.errors).forEach(field => {
+                    const errorElement = document.getElementById(`${field}-error`);
+                    if (errorElement) {
+                        errorElement.textContent = data.errors[field][0];
+                        errorElement.classList.remove('hidden');
+                    }
+                });
+            } else if (data.success) {
+                //clear form
+                form.reset();
+                
+                //success message
+                formError.textContent = 'Message sent successfully!';
+                formError.classList.remove('hidden');
+                formError.classList.remove('bg-red-100', 'text-red-700');
+                formError.classList.add('bg-green-100', 'text-green-700');
+            }
+        })
+        .catch(error => {
+            //full error message
+            console.error('Error:', error);
+            formError.textContent = 'An error occurred. Please try again later.';
+            formError.classList.remove('hidden');
+        });
+    });
+
+    //feature videos
+    const playButtons = document.querySelectorAll('.play-button');
+    const videos = document.querySelectorAll('video');
+
+    playButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            // console.log('clicked button');
+            e.stopPropagation();
+            const videoId = this.id.split('_')[1];
+            const video = document.getElementById(`featureVideo_${videoId}`);
+            const playIcon = document.getElementById(`playIcon_${videoId}`);
+            const pauseIcon = document.getElementById(`pauseIcon_${videoId}`);
+
+            videos.forEach(v => {
+                if (v !== video) {
+                    v.pause();
+                    v.classList.add('opacity-0');
+                    v.classList.remove('opacity-100');
+                    //reset icons
+                    const otherId = v.id.split('_')[1];
+                    document.getElementById(`playIcon_${otherId}`).classList.remove('hidden');
+                    document.getElementById(`pauseIcon_${otherId}`).classList.add('hidden');
+                } else {
+                    if (video.paused) {
+                        video.play();
+                        video.classList.remove('opacity-0');
+                        video.classList.add('opacity-100');
+                        playIcon.classList.add('hidden');
+                        pauseIcon.classList.remove('hidden');
+                    } else {
+                        video.pause();
+                        video.classList.add('opacity-0');
+                        video.classList.remove('opacity-100');
+                        playIcon.classList.remove('hidden');
+                        pauseIcon.classList.add('hidden');
+                    }
+                }
+            });
         });
     });
 });
