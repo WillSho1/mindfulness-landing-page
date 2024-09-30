@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div x-data="{ open: false }" class="relative overflow-x-hidden">
+<div x-data="{ open: false }" class="relative overflow-x-hidden min-h-screen flex">
     <!-- mobile toggle -->
     <button @click="open = !open" 
             :class="{'left-4': !open, 'left-68': open}"
@@ -26,8 +26,8 @@
         </div>
     </nav>
     <!-- content -->
-    <main class="w-full md:pl-64 transition-all duration-200 ease-in-out">
-        <div class="container mx-auto">
+    <main class="flex-grow md:ml-64 transition-all duration-200 ease-in-out">
+        <div class="min-h-screen flex flex-col">
             <!-- title -->
             <section id="hero" class="h-screen bg-xlight-green flex items-center justify-center">
                 <div class="text-center">
