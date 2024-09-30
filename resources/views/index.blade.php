@@ -60,12 +60,11 @@
             <section id="features" class="py-12 bg-white">
                 <div class="container mx-auto px-4">
                     <h2 class="text-2xl font-bold text-dark-green mb-4">Key Features</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         @foreach ($features as $feature)
                             <x-feature-card :feature="$feature" />
                         @endforeach
                     </div>
-                    <!-- Add screenshots here -->
                     <div class="mt-8">
                         <h3 class="text-xl font-bold text-dark-green mb-2">Feature Previews</h3>
                         <!-- Add your screenshot carousel or grid here -->
@@ -289,6 +288,47 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error:', error);
             formError.textContent = 'An error occurred. Please try again later.';
             formError.classList.remove('hidden');
+        });
+    });
+
+    //feature videos
+    const playButtons = document.querySelectorAll('.play-button');
+    const videos = document.querySelectorAll('video');
+
+    playButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            // console.log('clicked button');
+            e.stopPropagation();
+            const videoId = this.id.split('_')[1];
+            const video = document.getElementById(`featureVideo_${videoId}`);
+            const playIcon = document.getElementById(`playIcon_${videoId}`);
+            const pauseIcon = document.getElementById(`pauseIcon_${videoId}`);
+
+            videos.forEach(v => {
+                if (v !== video) {
+                    v.pause();
+                    v.classList.add('opacity-0');
+                    v.classList.remove('opacity-100');
+                    //reset icons
+                    const otherId = v.id.split('_')[1];
+                    document.getElementById(`playIcon_${otherId}`).classList.remove('hidden');
+                    document.getElementById(`pauseIcon_${otherId}`).classList.add('hidden');
+                } else {
+                    if (video.paused) {
+                        video.play();
+                        video.classList.remove('opacity-0');
+                        video.classList.add('opacity-100');
+                        playIcon.classList.add('hidden');
+                        pauseIcon.classList.remove('hidden');
+                    } else {
+                        video.pause();
+                        video.classList.add('opacity-0');
+                        video.classList.remove('opacity-100');
+                        playIcon.classList.remove('hidden');
+                        pauseIcon.classList.add('hidden');
+                    }
+                }
+            });
         });
     });
 });
