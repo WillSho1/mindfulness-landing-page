@@ -60,11 +60,14 @@
             <section id="features" class="py-12 bg-white">
                 <div class="container mx-auto px-4">
                     <h2 class="text-2xl font-bold text-dark-green mb-4">Key Features</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach ($features as $feature)
-                            <x-feature-card :feature="$feature" />
+                            <div class="w-full" style="max-width: 400px; margin: 0 auto;">
+                                <x-feature-card :feature="$feature" />
+                            </div>
                         @endforeach
                     </div>
+                    <!-- Add screenshots here -->
                     <div class="mt-8">
                         <h3 class="text-xl font-bold text-dark-green mb-2">Feature Previews</h3>
                         <!-- Add your screenshot carousel or grid here -->
@@ -333,4 +336,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<style>
+    @media (max-width: 768px) {
+        #features .grid {
+            justify-content: center;
+        }
+    }
+</style>
 @endsection
