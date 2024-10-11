@@ -184,6 +184,22 @@
                     </div>
                 </div>
             </section>
+            <section id="copyright" class="py-8 bg-light-grey">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-2xl font-bold text-dark-green mb-4">Copyright Notice</h2>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <p class="font-bold mb-2">Copyright © [2024] [Na Zhang, University of Connecticut/UConn]. All rights reserved.</p>
+                        <p class="mb-2">The mindfulness application was developed by Will Shostak, employed by UConn Digital Experience Group under the supervision of Na Zhang (Principal Investigator) and Joel Salisbury (Digital Experience Group Faculty) as part of a research project funded by the National Institute of Health/National Institute of Mental Health (Grant No. K01MH122502).</p>
+                        <p class="mb-2">The intellectual property rights of this mindfulness application, including its design, code, and content, are owned by Na Zhang and UConn. Any use, reproduction, or distribution of the application or its components without prior written permission is prohibited.</p>
+                        <p>Will Shostak has been granted permission to include this project in his professional portfolio for demonstration purposes only.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <!-- <footer class="py-4 bg-dark-green text-white text-center">
+                <p>&copy; {{ date('Y') }} University of Connecticut. All rights reserved.</p>
+            </footer> -->
         </div>
     </main>
 </div>
